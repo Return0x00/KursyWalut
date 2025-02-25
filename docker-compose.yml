@@ -1,11 +1,11 @@
 services:
   db:
     image: postgres:latest
-    container_name: kursy_db
+    container_name: postgres_db
     restart: always
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: KursyWalut123
+      POSTGRES_PASSWORD: AplikacjaWaluty123
       POSTGRES_DB: waluty
     ports:
       - "5432:5432"
@@ -14,19 +14,21 @@ services:
 
   backend:
     build: ./backend
-    container_name: kursy_backend
+    container_name: waluty_backend
     depends_on:
       - db
     environment:
       DATABASE_URL: postgresql://admin:AplikacjaWaluty123@db/waluty
     ports:
-      - "8001:8001"
+      - "8001:8001" # Miałem problem z portem 8000
 
   frontend:
-    build: ./frontend
-    container_name: kursy_frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: waluty_frontend
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       - backend
 
